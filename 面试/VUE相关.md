@@ -129,3 +129,9 @@ promise.Trick()>promise的回调>setTimeout>setImmediate
     合并配置，初始化生命周期，初始化事件中心，初始化渲染，初始化 data、props、computed、watcher 等等。
 
 vm._render 最终是通过执行 createElement 方法并返回的是 vnode，它是一个虚拟 Node
+
+## Vue的nextTick实现
+
+文件头部定义了一个触发回调的函数flushCallbacks, 这个方法永远是被异步执行的。作用就是按顺序执行callbacks里的所有回调。
+
+nextTick函数定义: 在调用每一次nextTick时都会push回调进callbacks，然后通过加useMacrotask参数判断是使用宏任务队列还是使用微任务队列。默认微任务队列，使用promise的callback把回调队列里的回调全放进微任务队列中。使用宏任务队列的话就用settimeout来做，把回调放进宏任务队列中。
